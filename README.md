@@ -1,6 +1,8 @@
-# Vite + React + Typescript + Eslint + Prettier
+# Vite + React + Typescript
 
-A starter for React with Typescript with the fast Vite and all static code testing with Eslint and formatting with Prettier.
+Memory game with API data based on the characters from the TV show "Breaking Bad".  
+API used: https://github.com/timbiles/Breaking-Bad--API
+
 
 
 ## Installation
