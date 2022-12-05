@@ -11,3 +11,8 @@ interface CharacterModel {
   category: string;
   better_call_saul_appearance: number[];
 }
+
+interface Scores {
+  current: number;
+  best: number;
+}
