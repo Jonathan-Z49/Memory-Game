@@ -9,6 +9,9 @@ const Footer = () => {
           alt="Github logo"
         />
       </a>
+      <a href="https://breakingbadapi.com/" id="api-link">
+        Powered By BreakingBadAPI
+      </a>
     </footer>
   );
 };
