@@ -84,6 +84,7 @@ body {
   align-content: center;
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.15);
   background-color: $second-color;
+  position: relative;
   a {
     display: flex;
     align-items: center;
@@ -95,6 +96,13 @@ body {
         transform: rotate(360deg);
       }
     }
+  }
+  #api-link {
+    text-decoration: underline;
+    color: black;
+    position: absolute;
+    right: 0;
+    margin-right: 2rem;
   }
 }
 
