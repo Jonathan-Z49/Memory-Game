@@ -12,20 +12,27 @@ function App() {
   const [characters, setCharacters] = useState<CharacterModel[]>([]); //api data
   const [score, setScore] = useState<Scores>({ current: 0, best: 0 }); //score
   const [guess, setGuess] = useState<number[]>([]); //current guesses, by char_id from api data
-  const [loading, setLoading] = useState(false); //if api loaded or not
+  const [status, setStatus] = useState({ isLoaded: false, error: false }); //status for checking if api is loaded, and if any errors happen.
 
   useEffect(() => {
-    if (!loading) {
+    if (!status.isLoaded) {
+      const controller = new AbortController(); //controller to pass to fetch request
+      const timeoutID = setTimeout(() => {
+        controller.abort(); //if 10s pass cancel fetch request
+      }, 10000);
       const offset: number = Math.floor(Math.random() * (52 - 0) + 0); //62 chars in api, make limit 52 so that we never have less than 10 chars
       const url = `https://www.breakingbadapi.com/api/characters?limit=10&offset=${offset}`;
-      fetch(url)
-        .then((res) => res.json())
+      fetch(url, { signal: controller.signal })
+        .then((res) => {
+          clearTimeout(timeoutID); //stop timer since fetch was successfull
+          setStatus({ isLoaded: true, error: false });
+          return res.json();
+        })
         .then((data) => {
           setCharacters(data);
-          setLoading(true);
         })
         .catch((error) => {
-          setLoading(false);
+          setStatus({ isLoaded: false, error: true }); //set error so we can diplay.
           console.log(error);
         });
     } else {
@@ -36,14 +43,12 @@ function App() {
   const resetGame = () => {
     setGuess([]); //incorrect guess, lost game so reset.
     setScore((prevState) => ({ ...prevState, current: 0 })); //only reset regular score, not best score.
-    setLoading(false); //get new api data
+    setStatus({ isLoaded: false, error: false }); //get new api data
   };
 
   const handleClickGuess = (e: React.MouseEvent<HTMLElement>) => {
-    const char_id: string = e.currentTarget.getAttribute('data-id');
+    const char_id: string = e.currentTarget.getAttribute('data-id') as string;
     const isPresent = guess.indexOf(Number(char_id)); //index or -1 if not found
-    console.log(char_id);
-    console.log(Number(char_id));
 
     if (isPresent == -1) {
       setGuess((prevState) => [...prevState, Number(char_id)]); //correct guess
@@ -59,10 +64,12 @@ function App() {
   return (
     <main className="App">
       <Scoreboard scores={score} />
-      {loading ? (
+      {status.isLoaded ? (
         <CardContainer characters={characters} onClick={handleClickGuess} />
       ) : (
-        <div className="loading-msg">Loading...</div>
+        <div className="loading-msg">
+          {status.error ? 'Error trying to fetch data...' : 'Loading...'}
+        </div>
       )}
       {score.current === 10 && <WinModal onClick={resetGame} />}
     </main>
