@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const Scoreboard = (props: { scores: Scores }) => {
   const score_container = useRef<HTMLDivElement>(null);
