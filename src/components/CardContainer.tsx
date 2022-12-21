@@ -12,10 +12,10 @@ const CardContainer = (props: Props) => {
     <section className="cards-container">
       {props.characters.map((item) => (
         <Card
-          key={item.char_id}
+          key={item.id}
           name={item.name}
-          image={item.img}
-          id={item.char_id}
+          image={item.sprites.front_default}
+          id={item.id}
           onClick={props.onClick}
         />
       ))}
