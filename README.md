@@ -1,9 +1,11 @@
-# Vite + React + Typescript
+# Memory Game
 
-Memory game with API data based on the characters from the TV show "Breaking Bad".  
-API used: https://github.com/timbiles/Breaking-Bad--API
+Simple memory game in which users must pick a card they haven't clicked before until there is no remaining cards.  
+Built using **Vite + Typescript + React + SCSS**
 
+## Features
 
+- Use of [Breaking Bad API](https://breakingbadapi.com/)
 
 ## Installation
 
