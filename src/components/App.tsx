@@ -15,26 +15,33 @@ function App() {
   const [status, setStatus] = useState({ isLoaded: false, error: false }); //status for checking if api is loaded, and if any errors happen.
 
   useEffect(() => {
-    if (!status.isLoaded) {
+    async function getAPIData() {
       const controller = new AbortController(); //controller to pass to fetch request
       const timeoutID = setTimeout(() => {
         controller.abort(); //if 10s pass cancel fetch request
       }, 10000);
-      const offset: number = Math.floor(Math.random() * (52 - 0) + 0); //62 chars in api, make limit 52 so that we never have less than 10 chars
-      const url = `https://www.breakingbadapi.com/api/characters?limit=10&offset=${offset}`;
-      fetch(url, { signal: controller.signal })
-        .then((res) => {
-          clearTimeout(timeoutID); //stop timer since fetch was successfull
-          setStatus({ isLoaded: true, error: false });
-          return res.json();
-        })
-        .then((data) => {
-          setCharacters(data);
-        })
-        .catch((error) => {
-          setStatus({ isLoaded: false, error: true }); //set error so we can diplay.
-          console.log(error);
-        });
+
+      try {
+        const offset: number = Math.floor(Math.random() * (500 - 0) + 0);
+        const url = `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`;
+        const response = await fetch(url, { signal: controller.signal }); //fetches inital response which doesnt give us detail info about char, only name and url that points to it
+        const json: PokeAPIResults = await response.json(); //array of 10 characters but only a name and url to their detailed info
+        const responseAll = await Promise.all(
+          json.results.map((item) => fetch(item.url, { signal: controller.signal })),
+        ); //make a fetch on each characters url
+        const result: CharacterModel[] = await Promise.all(
+          responseAll.map(async (item) => await item.json()), //return an array of objects instead of promises
+        );
+        clearTimeout(timeoutID);
+        setCharacters(result);
+        setStatus({ isLoaded: true, error: false });
+      } catch (error) {
+        setStatus({ isLoaded: false, error: true });
+      }
+    }
+
+    if (!status.isLoaded) {
+      getAPIData();
     } else {
       setCharacters((prevState) => shuffle(prevState.map((obj) => ({ ...obj })))); //shuffle copy of array
     }
