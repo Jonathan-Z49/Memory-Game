@@ -7,6 +7,8 @@ Built using **Vite + Typescript + React + SCSS**
 
 - Use of [PokeAPI](https://pokeapi.co/)
 
+## [Live Demo](https://jonathan-z49.github.io/Memory-Game/)
+
 ## Installation
 
 Clone the repo and run `npm install`
