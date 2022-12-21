@@ -1,15 +1,11 @@
 interface CharacterModel {
-  char_id: 1;
+  id: 1;
   name: string;
-  birthday: string;
-  occupation: string[];
-  img: string;
-  status: string;
-  nickname: string;
-  appearance: number[];
-  portrayed: string;
-  category: string;
-  better_call_saul_appearance: number[];
+  sprites: { front_default: string };
+}
+
+interface PokeAPIResults {
+  results: { name: string; url: string }[];
 }
 
 interface Scores {
