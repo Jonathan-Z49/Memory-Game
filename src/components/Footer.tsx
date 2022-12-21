@@ -9,8 +9,8 @@ const Footer = () => {
           alt="Github logo"
         />
       </a>
-      <a href="https://breakingbadapi.com/" id="api-link">
-        Powered By BreakingBadAPI
+      <a href="https://pokeapi.co/" id="api-link">
+        Powered By PokeAPI
       </a>
     </footer>
   );
