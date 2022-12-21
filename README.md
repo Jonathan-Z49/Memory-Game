@@ -5,7 +5,7 @@ Built using **Vite + Typescript + React + SCSS**
 
 ## Features
 
-- Use of [Breaking Bad API](https://breakingbadapi.com/)
+- Use of [PokeAPI](https://pokeapi.co/)
 
 ## Installation
 
